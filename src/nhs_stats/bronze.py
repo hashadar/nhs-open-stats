@@ -12,7 +12,7 @@ import httpx
 
 from nhs_stats.paths import DataPaths
 
-USER_AGENT = "nhs-stats/0.1 (open data pipeline)"
+USER_AGENT = "nhs-stats/0.1 (+https://github.com/hashadar/nhs-open-stats; open data pipeline)"
 TIMEOUT_SECONDS = 60.0
 
 
