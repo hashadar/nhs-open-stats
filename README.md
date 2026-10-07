@@ -1,6 +1,6 @@
-# nhs-stats
+# nhs-open-stats
 
-Cleansed, documented, dashboard-ready tables built from NHS England's published statistical work areas.
+Python package and CLI: `nhs-stats`. Cleansed, documented, dashboard-ready tables built from NHS England's published statistical work areas.
 
 **Status: early draft.** One vertical slice works end to end (monthly A&E: bronze, silver, quality gate, gold, lineage).
 No hosted dashboards or published datasets yet. Data quality, assurance and lineage come before breadth.

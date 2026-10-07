@@ -1,0 +1,28 @@
+name: Epic
+description: A multi-sprint outcome mapped to one of the plan's three areas
+title: "[Epic] "
+labels: ["type:epic"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Plan area
+      options: ["1. Strategy, governance and architecture", "2. Optimised cleansed datasets", "3. Data science and engineering"]
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What is true when this epic is done, in one or two sentences.
+    validations:
+      required: true
+  - type: textarea
+    id: success
+    attributes:
+      label: Success measures
+  - type: textarea
+    id: children
+    attributes:
+      label: Child issues
+      description: Add as sub-issues; list the first few here.

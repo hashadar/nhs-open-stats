@@ -1,0 +1,25 @@
+- {name: "type:epic", color: "5319e7", description: "Multi-sprint outcome with child issues"}
+- {name: "type:story", color: "1d76db", description: "User-facing capability"}
+- {name: "type:bug", color: "d73a4a", description: "Something is wrong"}
+- {name: "type:spike", color: "fbca04", description: "Time-boxed investigation"}
+- {name: "type:chore", color: "c5def5", description: "Enabling or maintenance task"}
+- {name: "area:governance", color: "0e8a16", description: "Plan area 1: strategy, governance, architecture"}
+- {name: "area:data", color: "0e8a16", description: "Plan area 2: cleansed datasets"}
+- {name: "area:analytics", color: "0e8a16", description: "Plan area 3: data science and engineering"}
+- {name: "layer:bronze", color: "bfd4f2", description: "Raw ingestion"}
+- {name: "layer:silver", color: "bfd4f2", description: "Cleansing and contracts"}
+- {name: "layer:gold", color: "bfd4f2", description: "Serving tables"}
+- {name: "layer:infra", color: "bfd4f2", description: "AWS and Terraform"}
+- {name: "layer:docs", color: "bfd4f2", description: "Documentation"}
+- {name: "layer:process", color: "bfd4f2", description: "Delivery process and repository"}
+- {name: "source:ae", color: "f9d0c4", description: "A&E attendances"}
+- {name: "source:rtt", color: "f9d0c4", description: "Referral to treatment"}
+- {name: "source:cancer", color: "f9d0c4", description: "Cancer waiting times"}
+- {name: "source:ambulance", color: "f9d0c4", description: "Ambulance quality indicators"}
+- {name: "source:reference", color: "f9d0c4", description: "Reference data (ODS, calendar)"}
+- {name: "blocked", color: "b60205", description: "Waiting on something external"}
+- {name: "needs-info", color: "d876e3", description: "More detail required"}
+- {name: "data-quality", color: "b60205", description: "Affects correctness of published numbers"}
+- {name: "good first issue", color: "7057ff", description: "Suitable for new contributors"}
+- {name: "help wanted", color: "008672", description: "Contributions welcome"}
+- {name: "dependencies", color: "0366d6", description: "Dependency updates"}

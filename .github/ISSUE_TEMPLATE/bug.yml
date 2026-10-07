@@ -1,0 +1,36 @@
+name: Bug
+description: Something is wrong, including incorrect or inconsistent published numbers
+title: "[Bug] "
+labels: ["type:bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Commands, month and source series. Use the synthetic fixture where possible.
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      options:
+        - Wrong or misleading numbers in a table (P0, add the data-quality label)
+        - Pipeline fails or blocks incorrectly
+        - Documentation or tooling
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit

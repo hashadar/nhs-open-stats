@@ -1,0 +1,45 @@
+name: User story
+description: A capability that delivers value to a dashboard author, analyst or contributor
+title: "[Story] "
+labels: ["type:story"]
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: Story
+      description: As a [role], I want [capability], so that [outcome].
+    validations:
+      required: true
+  - type: input
+    id: epic
+    attributes:
+      label: Parent epic
+      placeholder: "#12"
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Testable statements, one per line.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Data and licence
+      description: Source series, quality tier (official, experimental, management information), licence confirmed?
+  - type: dropdown
+    id: size
+    attributes:
+      label: Size estimate
+      options: ["S (under half a day)", "M (up to two days)", "L (up to five days)", "Too large, split it"]
+  - type: checkboxes
+    id: ready
+    attributes:
+      label: Definition of ready
+      options:
+        - label: Acceptance criteria are testable
+        - label: Dependencies and blockers are named
+        - label: Test data approach is clear (synthetic fixtures)
