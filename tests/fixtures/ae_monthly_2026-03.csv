@@ -1,0 +1,8 @@
+Period,Org Code,Parent Org,Org Name,A&E attendances Type 1,A&E attendances Type 2,A&E attendances Other A&E Department,A&E attendances Booked Appointments Type 1,A&E attendances Booked Appointments Type 2,A&E attendances Booked Appointments Other Department,Attendances over 4hrs Type 1,Attendances over 4hrs Type 2,Attendances over 4hrs Other Department,Attendances over 4hrs Booked Appointments Type 1,Attendances over 4hrs Booked Appointments Type 2,Attendances over 4hrs Booked Appointments Other Department,Patients who have waited 4-12 hs from DTA to admission,Patients who have waited 12+ hrs from DTA to admission,Emergency admissions via A&E - Type 1,Emergency admissions via A&E - Type 2,Emergency admissions via A&E - Other A&E Department,Other emergency admissions (i.e not via A&E)
+MSitAE-MARCH-2026,,,ENGLAND,87412,979,11276,1234,0,638,23512,19,562,121,0,29,5071,1290,24472,48,222,5978
+MSitAE-MARCH-2026,TST01,SYNTH REGION 2,SYNTHETIC TRUST 1,13305,0,1395,37,0,137,2911,0,69,3,0,6,1493,29,3725,0,27,1431
+MSitAE-MARCH-2026,TST02,SYNTH REGION 1,SYNTHETIC TRUST 2,16313,0,1704,222,0,107,3490,0,85,22,0,5,485,282,4567,0,34,934
+MSitAE-MARCH-2026,TST03,SYNTH REGION 2,SYNTHETIC TRUST 3,"8,968",0,2828,322,0,160,2839,0,141,32,0,8,426,295,2511,0,56,1099
+MSitAE-MARCH-2026,TST04,SYNTH REGION 1,SYNTHETIC TRUST 4,14499,-,1381,285,0,34,3739,0,69,28,0,1,595,276,4059,0,27,620
+MSitAE-MARCH-2026,TST05,SYNTH REGION 2,SYNTHETIC TRUST 5,17353,615,2480,52,0,148,5453,12,124,5,0,7,684,190,4858,30,49,599
+MSitAE-MARCH-2026,TST06,SYNTH REGION 1,SYNTHETIC TRUST 6,16974,364,1488,316,0,52,5080,7,74,31,0,2,1388,218,4752,18,29,1295

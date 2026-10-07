@@ -1,0 +1,13 @@
+nhs-stats
+Copyright 2026 Hasha Dar
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Data attribution (applies to data the software downloads, and to datasets derived from it):
+
+  Source: NHS England statistical work areas,
+  https://www.england.nhs.uk/statistics/statistical-work-areas/
+  Contains public sector information licensed under the Open Government Licence v3.0.
+  https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+
+The Apache License covers the code in this repository only. See DATA_LICENCE.md for data terms.

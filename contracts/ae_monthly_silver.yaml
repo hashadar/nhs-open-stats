@@ -1,0 +1,33 @@
+name: ae_monthly_silver
+version: 1
+description: >-
+  Monthly A&E attendances and emergency admissions, one row per provider per
+  reporting month. Counts are as published; blanks stay null.
+primary_key: [reporting_month, org_code]
+columns:
+  - {name: reporting_month, dtype: Date, nullable: false, description: "First day of the reporting month"}
+  - {name: org_code, dtype: String, nullable: false, pattern: '^[A-Z0-9]{3,5}$', description: "ODS code of the provider"}
+  - {name: org_name, dtype: String, description: "Provider name as published"}
+  - {name: parent_org, dtype: String, description: "Parent organisation (commissioning region or system) as published"}
+  - {name: attendances_type1, dtype: Int64, min: 0, description: "Type 1 A&E attendances"}
+  - {name: attendances_type2, dtype: Int64, min: 0, description: "Type 2 A&E attendances"}
+  - {name: attendances_other, dtype: Int64, min: 0, description: "Other A&E department attendances"}
+  - {name: attendances_booked_type1, dtype: Int64, min: 0, description: "Booked appointment attendances, type 1"}
+  - {name: attendances_booked_type2, dtype: Int64, min: 0, description: "Booked appointment attendances, type 2"}
+  - {name: attendances_booked_other, dtype: Int64, min: 0, description: "Booked appointment attendances, other department"}
+  - {name: over_4h_type1, dtype: Int64, min: 0, description: "Type 1 attendances over four hours"}
+  - {name: over_4h_type2, dtype: Int64, min: 0, description: "Type 2 attendances over four hours"}
+  - {name: over_4h_other, dtype: Int64, min: 0, description: "Other department attendances over four hours"}
+  - {name: over_4h_booked_type1, dtype: Int64, min: 0, description: "Booked type 1 attendances over four hours"}
+  - {name: over_4h_booked_type2, dtype: Int64, min: 0, description: "Booked type 2 attendances over four hours"}
+  - {name: over_4h_booked_other, dtype: Int64, min: 0, description: "Booked other department attendances over four hours"}
+  - {name: dta_wait_4_to_12h, dtype: Int64, min: 0, description: "Patients waiting 4 to 12 hours from decision to admit to admission"}
+  - {name: dta_wait_over_12h, dtype: Int64, min: 0, description: "Patients waiting over 12 hours from decision to admit to admission"}
+  - {name: emergency_admissions_type1, dtype: Int64, min: 0, description: "Emergency admissions via type 1 A&E"}
+  - {name: emergency_admissions_type2, dtype: Int64, min: 0, description: "Emergency admissions via type 2 A&E"}
+  - {name: emergency_admissions_other, dtype: Int64, min: 0, description: "Emergency admissions via other A&E departments"}
+  - {name: emergency_admissions_not_via_ae, dtype: Int64, min: 0, description: "Other emergency admissions not via A&E"}
+  - {name: quality_tier, dtype: String, nullable: false, description: "official, experimental or management_information"}
+  - {name: status, dtype: String, nullable: false, description: "provisional, revised or final, as recorded at ingestion"}
+  - {name: source_sha256, dtype: String, nullable: false, description: "SHA-256 of the bronze file this row came from"}
+  - {name: ingested_at, dtype: Datetime, nullable: false, description: "UTC time the bronze file was fetched"}
