@@ -37,7 +37,7 @@ def build_parser() -> argparse.ArgumentParser:
     origin.add_argument("--url", help="Public URL of the monthly CSV")
     origin.add_argument("--file", type=Path, help="Local CSV, for offline use")
 
-    build = commands.add_parser("build", help="Bronze to silver and gold, with quality gate")
+    build = commands.add_parser("build", help="Bronze to silver, with quality gate")
     build.add_argument("--month", type=_month, required=True)
     return parser
 
@@ -62,7 +62,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     for check in result.results:
         flag = "ok " if check.passed else check.severity
         print(f"[{flag}] {check.name}")
-    print(f"silver: {result.silver_path}\ngold: {result.gold_path}")
+    print(f"silver: {result.silver_path}")
     return 0
 
 

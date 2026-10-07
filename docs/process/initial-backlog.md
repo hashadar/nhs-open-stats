@@ -33,7 +33,7 @@ Goal: the A&E slice runs on a genuine file, the repository is configured on GitH
 |---|---|---|---|---|---|
 | S1.1 | spike | E4 | Confirm scripted download from england.nhs.uk works (user agent, redirects, bot challenge) | S | Written finding: URL pattern for a monthly CSV, whether `httpx` succeeds, fallback if blocked (manual download via `fetch --file`) |
 | S1.2 | story | E4 | Verify the A&E column layout and period label against a real monthly CSV; update column map and fixture | M | Real March 2026 file ingests; fixture mirrors its headers; drift error message tested |
-| S1.3 | story | E4 | Ingest the latest 12 months of A&E, recent first, with status (provisional, revised) recorded | M | 12 silver partitions; gold has 12 months; quality reports archived; revised files kept as new bronze versions |
+| S1.3 | story | E4 | Ingest the latest 12 months of A&E, recent first, with status (provisional, revised) recorded | M | 12 silver partitions; quality reports archived; revised files kept as new bronze versions (gold deferred) |
 | S1.4 | chore | E1 | Configure GitHub: branch protection, required checks, labels (`labels.yml`), Project board, Dependabot, CODEOWNERS handle | S | Settings match `docs/process`; first PR merged through the required checks |
 | S1.5 | story | E1 | Confirm the OGL v3.0 position for A&E and RTT from NHS England's terms and record it | S | Terms page cited in `DATA_LICENCE.md`; per-series licence field in the catalogue |
 | S1.6 | story | E3 | Source catalogue v0: `catalogue/sources.yaml` with all series on the plan's index (owner, cadence, format, status, licence, tractability) | L | Validated by a schema and a test; ranking rationale documented; first slice choice confirmed |

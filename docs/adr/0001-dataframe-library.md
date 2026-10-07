@@ -4,10 +4,11 @@ Date: 2026-10-07. Status: accepted.
 
 ## Context
 
-The pipeline turns messy monthly spreadsheets and CSVs into typed parquet tables, then serves SQL-queryable
-gold tables. Volumes are small (low single-digit gigabytes curated, files up to roughly 60 MB), so raw speed
-is not the deciding factor. Correctness of types, readable transformations and low operating cost matter more.
-Contributors will mostly be data scientists and software developers, so familiarity matters too.
+The pipeline turns messy monthly spreadsheets and CSVs into typed parquet tables. Gold serving tables are
+planned later as multi-year time series. Volumes are small (low single-digit gigabytes curated, files up to
+roughly 60 MB), so raw speed is not the deciding factor. Correctness of types, readable transformations and
+low operating cost matter more. Contributors will mostly be data scientists and software developers, so
+familiarity matters too.
 
 ## Options
 
@@ -23,8 +24,8 @@ Contributors will mostly be data scientists and software developers, so familiar
 ## Decision
 
 - **polars is the primary dataframe library** for bronze to silver cleaning and all in-memory work.
-- **DuckDB** runs SQL over parquet to build gold tables (`sql/gold/*.sql`). SQL is easy to review, runs
-  unchanged against S3, and is close to what Athena users write (dialect differences are noted where they matter).
+- **DuckDB** (or Athena SQL) is reserved for a future gold build over silver parquet; it is not a dependency
+  while the pipeline stops at silver.
 - **Rust via PyO3 and maturin only where profiling shows a need.** `rust/nhs_stats_core` is a placeholder
   with two small functions. The Python implementation stays the reference, with parity tests, until a hot path
   justifies switching. Nothing in the Python package imports the crate today.
@@ -35,7 +36,5 @@ Contributors will mostly be data scientists and software developers, so familiar
 
 - Strict typing catches layout drift early (a column that becomes text fails the contract).
 - Contributors who know only pandas have a small learning curve; the codebase keeps expressions simple.
-- Two engines (polars and DuckDB) share parquet and Arrow, so there is no conversion cost, but two query
-  idioms to learn. This is accepted because SQL is the contract with dashboards.
 - Revisit if polars Excel support proves inadequate for the XLS-only series; a pandas or calamine read at the
   bronze boundary is the fallback.

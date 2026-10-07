@@ -1,4 +1,4 @@
-"""Orchestration for the A&E monthly vertical slice: bronze -> silver -> gold."""
+"""Orchestration for the A&E monthly slice: bronze -> quality gate -> silver."""
 
 from __future__ import annotations
 
@@ -7,9 +7,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import httpx
-import polars as pl
 
-from nhs_stats import bronze, gold, lineage, quality, silver
+from nhs_stats import bronze, lineage, quality, silver
 from nhs_stats.contracts import load_contract
 from nhs_stats.paths import DataPaths
 from nhs_stats.sources import ae_monthly as ae
@@ -18,7 +17,6 @@ from nhs_stats.sources import ae_monthly as ae
 @dataclass(frozen=True)
 class BuildResult:
     silver_path: Path
-    gold_path: Path
     report_path: Path
     results: list[quality.CheckResult]
 
@@ -57,7 +55,7 @@ def ingest_file(
 
 
 def build(month_label: str, paths: DataPaths) -> BuildResult:
-    """Clean the latest bronze file for a month, gate on quality, write silver and gold."""
+    """Clean the latest bronze file for a month, gate on quality, write silver."""
     run = lineage.RunRecord(job="ae_monthly.build", started_at=datetime.now(UTC).isoformat())
     source = bronze.latest(paths, ae.SOURCE_ID, month_label)
     run.inputs.append(
@@ -99,25 +97,11 @@ def build(month_label: str, paths: DataPaths) -> BuildResult:
                 providers.height,
             )
         )
-
-        gold_path = paths.gold_file(ae.GOLD_TABLE)
-        gold_rows = gold.build_table(
-            f"{ae.GOLD_TABLE}.sql", paths.silver_glob(ae.SOURCE_ID), gold_path
-        )
-        run.outputs.append(
-            lineage.Dataset(
-                "gold", paths.relative(gold_path), lineage.file_sha256(gold_path), gold_rows
-            )
-        )
         run.result = "success"
-        return BuildResult(silver_path, gold_path, report_path, results)
+        return BuildResult(silver_path, report_path, results)
     except Exception:
         run.result = "failed"
         raise
     finally:
         run.ended_at = datetime.now(UTC).isoformat()
         lineage.append(run, paths)
-
-
-def read_gold(paths: DataPaths) -> pl.DataFrame:
-    return pl.read_parquet(paths.gold_file(ae.GOLD_TABLE))

@@ -11,7 +11,6 @@ import re
 
 SOURCE_ID = "ae_monthly"
 SILVER_CONTRACT = "ae_monthly_silver"
-GOLD_TABLE = "ae_provider_month"
 LANDING_PAGE = (
     "https://www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/"
 )
