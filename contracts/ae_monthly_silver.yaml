@@ -6,7 +6,7 @@ description: >-
 primary_key: [reporting_month, org_code]
 columns:
   - {name: reporting_month, dtype: Date, nullable: false, description: "First day of the reporting month"}
-  - {name: org_code, dtype: String, nullable: false, pattern: '^[A-Z0-9]{3,5}$', description: "ODS code of the provider"}
+  - {name: org_code, dtype: String, nullable: false, pattern: '^[A-Z0-9]{3,6}$', description: "ODS code (trust 3 chars; some UTCs/practices 5-6)"}
   - {name: org_name, dtype: String, description: "Provider name as published"}
   - {name: parent_org, dtype: String, description: "Parent organisation (commissioning region or system) as published"}
   - {name: attendances_type1, dtype: Int64, min: 0, description: "Type 1 A&E attendances"}

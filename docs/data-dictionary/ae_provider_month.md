@@ -7,7 +7,7 @@ Status: draft. Layout verified against synthetic fixtures only.
 | Column | Type | Description |
 |---|---|---|
 | reporting_month | date | First day of the month |
-| org_code | string | ODS provider code |
+| org_code | string | ODS provider code (3–6 alphanumeric; trusts usually 3) |
 | org_name | string | Provider name as published |
 | parent_org | string | Parent organisation as published |
 | total_attendances | int | Sum of type 1, type 2, other and booked-appointment attendances (nulls as zero) |

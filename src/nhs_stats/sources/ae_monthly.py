@@ -1,7 +1,8 @@
 """Monthly A&E Attendances and Emergency Admissions (NHS England).
 
 Landing page: https://www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/
-Official Statistics, published monthly as XLS and CSV, provider level.
+Year pages list monthly CSV links under wp-content/uploads with opaque suffixes.
+See docs/process/findings/s1.1-ae-download.md. Official Statistics, XLS and CSV, provider level.
 """
 
 from __future__ import annotations
@@ -14,9 +15,17 @@ GOLD_TABLE = "ae_provider_month"
 LANDING_PAGE = (
     "https://www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/"
 )
+YEAR_PAGE_TEMPLATE = (
+    "https://www.england.nhs.uk/statistics/statistical-work-areas/"
+    "ae-waiting-times-and-activity/ae-attendances-and-emergency-admissions-{fy_start}-{fy_end}/"
+)
 QUALITY_TIER = "official"
 
+# National total row uses Org Code TOTAL (verified March 2026 revised CSV). Blank org also accepted.
+NATIONAL_ORG_CODES = frozenset({"TOTAL"})
+
 # Normalised raw header (lower case, single spaces) -> silver column.
+# Aliases allowed where published wording has varied.
 COLUMN_MAP: dict[str, str] = {
     "period": "period_label",
     "org code": "org_code",
@@ -39,13 +48,18 @@ COLUMN_MAP: dict[str, str] = {
     "emergency admissions via a&e - type 1": "emergency_admissions_type1",
     "emergency admissions via a&e - type 2": "emergency_admissions_type2",
     "emergency admissions via a&e - other a&e department": "emergency_admissions_other",
+    "other emergency admissions": "emergency_admissions_not_via_ae",
     "other emergency admissions (i.e not via a&e)": "emergency_admissions_not_via_ae",
 }
 
+REQUIRED_COLUMNS: frozenset[str] = frozenset(COLUMN_MAP.values())
+
 COUNT_COLUMNS: tuple[str, ...] = tuple(
-    name
-    for name in COLUMN_MAP.values()
-    if name not in {"period_label", "org_code", "parent_org", "org_name"}
+    dict.fromkeys(
+        name
+        for name in COLUMN_MAP.values()
+        if name not in {"period_label", "org_code", "parent_org", "org_name"}
+    )
 )
 
 ATTENDANCE_COLUMNS = (

@@ -39,10 +39,11 @@ def clean_ae_monthly(
     source_sha256: str,
     ingested_at: datetime,
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
-    """Return (provider rows, England total row) in contract column order."""
+    """Return (provider rows, national total row) in contract column order."""
     renamed = {h: ae.normalise_header(h) for h in raw.columns}
     unknown = [h for h, n in renamed.items() if n not in ae.COLUMN_MAP]
-    absent = sorted(set(ae.COLUMN_MAP) - set(renamed.values()))
+    mapped = {ae.COLUMN_MAP[n] for n in renamed.values() if n in ae.COLUMN_MAP}
+    absent = sorted(ae.REQUIRED_COLUMNS - mapped)
     if absent or unknown:
         raise SchemaDriftError(f"missing columns: {absent}; unexpected columns: {unknown}")
 
@@ -54,9 +55,18 @@ def clean_ae_monthly(
         *(_to_count(c) for c in ae.COUNT_COLUMNS),
     )
 
-    labels = {ae.parse_period_label(p) for p in df["period_label"].drop_nulls().to_list()}
-    if labels != {month_label}:
-        raise SchemaDriftError(f"period labels {sorted(map(str, labels))} != {month_label}")
+    # Published TOTAL row uses Period=TOTAL; only provider rows carry MSitAE-MONTH-YYYY.
+    is_national = pl.col("org_code").is_null() | pl.col("org_code").is_in(
+        list(ae.NATIONAL_ORG_CODES)
+    )
+    provider_labels = {
+        ae.parse_period_label(p)
+        for p in df.filter(~is_national)["period_label"].drop_nulls().to_list()
+    }
+    if provider_labels != {month_label}:
+        raise SchemaDriftError(
+            f"period labels {sorted(map(str, provider_labels))} != {month_label}"
+        )
     year, month = (int(part) for part in month_label.split("-"))
 
     df = df.with_columns(
@@ -78,6 +88,6 @@ def clean_ae_monthly(
         "ingested_at",
     ]
     df = df.select(ordered)
-    providers = df.filter(pl.col("org_code").is_not_null()).sort("org_code")
-    england = df.filter(pl.col("org_code").is_null())
+    england = df.filter(is_national)
+    providers = df.filter(~is_national).sort("org_code")
     return providers, england

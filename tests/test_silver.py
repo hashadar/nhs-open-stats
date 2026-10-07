@@ -25,6 +25,8 @@ def test_cleaning_separates_england_and_matches_contract(fixture_csv: Path) -> N
     providers, england = _clean(fixture_csv)
     assert providers.height == 6
     assert england.height == 1
+    assert england["org_code"][0] == "TOTAL"
+    assert "TOTAL" not in providers["org_code"].to_list()
     assert providers["reporting_month"].unique().to_list() == [date(2026, 3, 1)]
     assert validate(providers, load_contract("ae_monthly_silver")) == []
 
@@ -37,7 +39,7 @@ def test_thousands_separators_and_suppression_handled(fixture_csv: Path) -> None
 
 
 def test_schema_drift_is_reported(fixture_csv: Path) -> None:
-    raw = silver.read_raw(fixture_csv.read_bytes()).rename({"Org Name": "Organisation"})
+    raw = silver.read_raw(fixture_csv.read_bytes()).rename({"Org name": "Organisation"})
     with pytest.raises(silver.SchemaDriftError, match="missing columns"):
         silver.clean_ae_monthly(
             raw,
@@ -47,6 +49,22 @@ def test_schema_drift_is_reported(fixture_csv: Path) -> None:
             source_sha256="x",
             ingested_at=INGESTED,
         )
+
+
+def test_legacy_other_emergency_header_alias(fixture_csv: Path) -> None:
+    raw = silver.read_raw(fixture_csv.read_bytes()).rename(
+        {"Other emergency admissions": "Other emergency admissions (i.e not via A&E)"}
+    )
+    providers, england = silver.clean_ae_monthly(
+        raw,
+        month_label="2026-03",
+        quality_tier="official",
+        status="provisional",
+        source_sha256="abc",
+        ingested_at=INGESTED,
+    )
+    assert providers.height == 6
+    assert england.height == 1
 
 
 def test_wrong_month_is_rejected(fixture_csv: Path) -> None:
