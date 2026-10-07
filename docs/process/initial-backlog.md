@@ -77,4 +77,4 @@ Goal: trustworthy numbers that a dashboard can query, with revisions and breaks 
 1. Plan names RTT as the first anchor series; the draft slice uses A&E because the monthly CSV is a single tidy
    file. Confirm the order (S1.6).
 2. Real file layout and automated download are unverified (S1.1, S1.2).
-3. GitHub handle for CODEOWNERS and the repository location (S1.4).
+3. Repository is `hashadar/nhs-open-stats`; CODEOWNERS is set to `@hashadar` (S1.4 covers branch protection and the board).

@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: detect-private-key
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types: [python]
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: cargo fmt --manifest-path rust/nhs_stats_core/Cargo.toml --
+        language: system
+        files: \.rs$

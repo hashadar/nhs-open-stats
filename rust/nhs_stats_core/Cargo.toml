@@ -1,0 +1,17 @@
+[package]
+name = "nhs_stats_core"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Performance-sensitive helpers for nhs-stats, exposed to Python via PyO3 (optional)."
+
+[lib]
+name = "nhs_stats_core"
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# Build the Python extension with: maturin develop --features python
+python = ["dep:pyo3"]
+
+[dependencies]
+pyo3 = { version = "0.23", features = ["extension-module"], optional = true }
