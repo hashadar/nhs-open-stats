@@ -2,15 +2,16 @@
 
 Python package and CLI: `nhs-stats`. Cleansed, documented, dashboard-ready tables built from NHS England's published statistical work areas.
 
-**Status: early draft.** One vertical slice works end to end (monthly A&E: bronze, silver, quality gate, gold, lineage).
-No hosted dashboards or published datasets yet. Data quality, assurance and lineage come before breadth.
-The project is a personal public project and is intended to open to contributors in about a year.
+**Status: early draft.** Monthly A&E runs bronze → quality gate → silver, with lineage. Gold (multi-year
+serving tables) is deferred. No hosted dashboards or published datasets yet. Data quality, assurance and
+lineage come before breadth. The project is a personal public project and is intended to open to contributors
+in about a year.
 
 ## What it does
 
 Takes a monthly A&E CSV, stores it unchanged with provenance, cleans and types it with polars, validates it
-against a data contract, runs quality checks (blocking and advisory), writes parquet, builds a serving table
-with DuckDB SQL, and records lineage. Everything runs locally without AWS.
+against a data contract, runs quality checks (blocking and advisory), writes silver parquet, and records
+lineage. Everything runs locally without AWS.
 
 ## Quick start
 
@@ -24,12 +25,12 @@ uv run pytest                                   # offline tests
 uv run nhs-stats fetch --month 2026-03 --file tests/fixtures/ae_monthly_2026-03.csv
 uv run nhs-stats build --month 2026-03
 
-# From NHS England: copy the monthly CSV link from the A&E landing page (see sources/ae_monthly.py).
-# The column layout is not yet verified against a live file (see docs/process/initial-backlog.md, S1.1-S1.2).
-uv run nhs-stats fetch --month 2026-03 --url "<monthly A&E CSV URL>"
+# From NHS England: copy a monthly CSV URL from the year page (see docs/process/findings/s1.1-ae-download.md).
+uv run nhs-stats fetch --month 2026-03 --url "<monthly A&E CSV URL>" --status revised
 ```
 
-Output lands in `./data` (gitignored) or `$NHS_STATS_DATA_DIR`. See `docs/architecture.md`; delivery process is in `docs/process/`.
+Output lands in `./data` (gitignored) or `$NHS_STATS_DATA_DIR` — inspect silver parquet and `data/quality/`.
+See `docs/architecture.md`; delivery process is in `docs/process/`.
 
 Checks used in CI:
 
@@ -45,7 +46,7 @@ cd infra/terraform && terraform fmt -check && terraform init -backend=false && t
 |---|---|
 | `src/nhs_stats/` | Python package |
 | `contracts/` | Data contracts (YAML) |
-| `sql/gold/` | Serving-table SQL |
+| `sql/` | Reserved for future gold SQL |
 | `rust/nhs_stats_core/` | Optional Rust crate (placeholder) |
 | `infra/terraform/` | AWS infrastructure skeleton |
 | `docs/` | Architecture, ADRs, data dictionary, process |

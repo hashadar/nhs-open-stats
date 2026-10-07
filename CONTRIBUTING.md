@@ -27,5 +27,6 @@ Rust and Terraform checks are listed in the README.
 ## Adding a source
 
 1. Confirm the licence and record it.
-2. Add a module in `src/nhs_stats/sources/`, a contract in `contracts/`, SQL in `sql/gold/`, fixtures and tests.
-3. Add a data dictionary entry.
+2. Add a module in `src/nhs_stats/sources/`, a contract in `contracts/`, fixtures and tests.
+3. Document columns (contract and, when present, a data dictionary entry). Gold SQL is out of scope until the
+   serving layer is designed.

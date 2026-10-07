@@ -1,6 +1,7 @@
-"""Filesystem layout for the bronze, silver and gold layers.
+"""Filesystem layout for the bronze and silver layers.
 
-The same relative layout maps one-to-one onto S3 prefixes.
+The same relative layout maps one-to-one onto S3 prefixes. Gold (multi-year serving
+tables) is deferred; see docs/architecture.md.
 """
 
 from __future__ import annotations
@@ -27,12 +28,6 @@ class DataPaths:
 
     def silver_file(self, source_id: str, month_label: str) -> Path:
         return self.root / "silver" / source_id / f"reporting_month={month_label}" / "data.parquet"
-
-    def silver_glob(self, source_id: str) -> str:
-        return str(self.root / "silver" / source_id / "reporting_month=*" / "data.parquet")
-
-    def gold_file(self, table: str) -> Path:
-        return self.root / "gold" / table / f"{table}.parquet"
 
     def quality_report(self, source_id: str, month_label: str) -> Path:
         return self.root / "quality" / source_id / f"{month_label}.json"

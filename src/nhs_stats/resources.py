@@ -1,4 +1,4 @@
-"""Locate contracts and SQL in an installed wheel or a source checkout."""
+"""Locate contracts in an installed wheel or a source checkout."""
 
 from __future__ import annotations
 
@@ -8,16 +8,10 @@ _PACKAGE_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _PACKAGE_DIR.parent.parent
 
 
-def _resolve(packaged: str, checkout: str) -> Path:
-    for candidate in (_PACKAGE_DIR / packaged, _REPO_ROOT / checkout):
+def contracts_dir() -> Path:
+    packaged = _PACKAGE_DIR / "_contracts"
+    checkout = _REPO_ROOT / "contracts"
+    for candidate in (packaged, checkout):
         if candidate.is_dir():
             return candidate
-    raise FileNotFoundError(f"Could not locate resource directory '{checkout}'")
-
-
-def contracts_dir() -> Path:
-    return _resolve("_contracts", "contracts")
-
-
-def sql_dir() -> Path:
-    return _resolve("_sql", "sql")
+    raise FileNotFoundError("Could not locate contracts directory")

@@ -9,18 +9,14 @@ from nhs_stats.paths import DataPaths
 from nhs_stats.quality import QualityGateError
 
 
-def test_end_to_end_writes_silver_gold_report_and_lineage(
-    fixture_csv: Path, paths: DataPaths
-) -> None:
+def test_end_to_end_writes_silver_report_and_lineage(fixture_csv: Path, paths: DataPaths) -> None:
     pipeline.ingest_file(fixture_csv, "2026-03", paths)
     result = pipeline.build("2026-03", paths)
 
     silver = pl.read_parquet(result.silver_path)
-    gold = pipeline.read_gold(paths)
-    assert silver.height == gold.height == 6
-    assert gold["pct_within_4h"].is_between(0, 1).all()
-    first = gold.row(0, named=True)
-    assert first["quality_tier"] == "official"
+    assert silver.height == 6
+    assert silver["quality_tier"].unique().to_list() == ["official"]
+    assert "TOTAL" not in silver["org_code"].to_list()
 
     report = json.loads(result.report_path.read_text())
     assert report["passed"] is True
@@ -28,18 +24,22 @@ def test_end_to_end_writes_silver_gold_report_and_lineage(
 
     runs = [json.loads(line) for line in paths.lineage_log.read_text().splitlines()]
     assert runs[-1]["result"] == "success"
-    assert {o["layer"] for o in runs[-1]["outputs"]} == {"silver", "gold"}
+    assert {o["layer"] for o in runs[-1]["outputs"]} == {"silver"}
     assert runs[-1]["inputs"][0]["sha256"] == silver["source_sha256"][0]
 
 
-def test_gold_accumulates_months(fixture_csv: Path, paths: DataPaths, tmp_path: Path) -> None:
+def test_silver_accumulates_months(fixture_csv: Path, paths: DataPaths, tmp_path: Path) -> None:
     pipeline.ingest_file(fixture_csv, "2026-03", paths)
     pipeline.build("2026-03", paths)
     april = tmp_path / "april.csv"
     april.write_text(fixture_csv.read_text().replace("MARCH-2026", "APRIL-2026"))
     pipeline.ingest_file(april, "2026-04", paths)
     pipeline.build("2026-04", paths)
-    assert pipeline.read_gold(paths)["reporting_month"].n_unique() == 2
+    months = {
+        p.parent.name.removeprefix("reporting_month=")
+        for p in paths.root.glob("silver/ae_monthly/reporting_month=*/data.parquet")
+    }
+    assert months == {"2026-03", "2026-04"}
 
 
 def test_quality_failure_blocks_silver_and_is_recorded(
@@ -70,4 +70,6 @@ def test_cli_fetch_and_build(
         == 0
     )
     assert cli.main(["--data-dir", data, "build", "--month", "2026-03"]) == 0
-    assert "gold:" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "silver:" in out
+    assert "gold:" not in out
